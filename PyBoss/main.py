@@ -28,7 +28,6 @@ def computeBudget(fileName):
                 print(exgHeaders)
                 sys.exit('couldn\'t calculate data. please check tha format includes "Name", "DOB", "SSN", and "State')
 
-        print(exgHeaders)
         # Loop through the data after headers
         for row in csvreader:
             # Append modified data
