@@ -1,5 +1,6 @@
 import csv
 import os
+import sys
 
 # function definition
 def computeBudget(fileName):
@@ -24,24 +25,32 @@ def computeBudget(fileName):
 
         # Split the data on commas
         csvreader = csv.reader(csvfile, delimiter=',')
-        # Skip the headers
-        #TODO judge the contents of headers
-        next(csvreader, None)
-        # Loop through the data
+        
+        # Store the contents of headers and get column numbers of 'Date' and 'Revenue'
+        headers = next(csvreader, None)
+        for index, item in enumerate(headers):
+            if item == 'Date': datCol = index
+            if item == 'Revenue': revCol = index
+        
+        # Exit if not above column numbers
+        if (not 'datCol' in locals()) or (not 'revCol' in locals()):
+            sys.exit('couldn\'t calculate data. please check tha format includes "Date" and "Revenue"')
+
+        # Loop through the data after headers
         for row in csvreader:
             # Assign firstRevenue if isFirst is False
             if not isFirst:
-                firstRevenue = int(row[1])
+                firstRevenue = int(row[revCol])
                 isFirst = True
             # Compare the values and assign max/min if needed
             if int(row[1]) > maxRevenue:
-                maxRevenue = int(row[1])
-                maxMon = row[0]
+                maxRevenue = int(row[revCol])
+                maxMon = row[datCol]
             if int(row[1]) < minRevenue:
-                minRevenue = int(row[1])
-                minMon = row[0]
+                minRevenue = int(row[revCol])
+                minMon = row[datCol]
             # Sum totalRevenue
-            totalRevenue = totalRevenue + int(row[1])
+            totalRevenue = totalRevenue + int(row[revCol])
 
         # After the loop, assign lastRevenue
         lastRevenue = int(row[1])
@@ -62,7 +71,7 @@ def computeBudget(fileName):
     print(resultStr + '\n')
 
     # Write results as a text file
-    # Remove file extension
+    # Remove file extension from resource file
     fn = fileName[0:fileName.rfind('.')]
     writeFile = open('analysis_' + fn + '.txt','w')
     writeFile.write(resultStr)
