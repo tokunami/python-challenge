@@ -25,6 +25,7 @@ def computeBudget(fileName):
         # Split the data on commas
         csvreader = csv.reader(csvfile, delimiter=',')
         # Skip the headers
+        #TODO judge the contents of headers
         next(csvreader, None)
         # Loop through the data
         for row in csvreader:
@@ -32,7 +33,7 @@ def computeBudget(fileName):
             if not isFirst:
                 firstRevenue = int(row[1])
                 isFirst = True
-            # Compare the values and assign if needed
+            # Compare the values and assign max/min if needed
             if int(row[1]) > maxRevenue:
                 maxRevenue = int(row[1])
                 maxMon = row[0]
@@ -42,20 +43,29 @@ def computeBudget(fileName):
             # Sum totalRevenue
             totalRevenue = totalRevenue + int(row[1])
 
-        # After the loop, asign lastRevenue
+        # After the loop, assign lastRevenue
         lastRevenue = int(row[1])
 
-    # compute averageRevenueChange
+    # Compute averageRevenueChange
     avRevenueChange = int((lastRevenue - firstRevenue)/(totalMonths-1))
 
-    print('Financial Analysis for ' + fileName)
-    print('-------------------')
-    print('Total Months: ' + str(totalMonths))
-    print('Total Revenue: $' + str(totalRevenue))
-    print('Average Revenue Change: $' + str(avRevenueChange))
-    print('Greatest Invrease in Revenue: ' + maxMon + ' ($' + str(maxRevenue) + ')')
-    print('Greatest Decrease in Revenue: ' + minMon + ' ($' + str(minRevenue) + ')')
-    print('')
+    # Generate resultstring
+    resultStr = 'Financial Analysis for ' + fileName
+    resultStr += '\n-------------------'
+    resultStr += '\nTotal Months: ' + str(totalMonths)
+    resultStr += '\nTotal Revenue: $' + str(totalRevenue)
+    resultStr += '\nAverage Revenue Change: $' + str(avRevenueChange)
+    resultStr += '\nGreatest Invrease in Revenue: ' + maxMon + ' ($' + str(maxRevenue) + ')'
+    resultStr += '\nGreatest Decrease in Revenue: ' + minMon + ' ($' + str(minRevenue) + ')'
+
+    # Print result
+    print(resultStr + '\n')
+
+    # Write results as a text file
+    # Remove file extension
+    fn = fileName[0:fileName.rfind('.')]
+    writeFile = open('analysis_' + fn + '.txt','w')
+    writeFile.write(resultStr)
 
 # Get all files in the directory
 fileList = os.listdir('raw_data')
