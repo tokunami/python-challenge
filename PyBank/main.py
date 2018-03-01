@@ -7,7 +7,7 @@ def computeBudget(fileName):
     # Read though the csv of raw data
     csvpath = os.path.join('raw_data', fileName)
 
-    # Get rownomber - 1 as totalMonths
+    # Get rownumber - 1 as totalMonths
     totalMonths = sum(1 for line in open(csvpath)) - 1
 
     # Assign/declaration fieleds
