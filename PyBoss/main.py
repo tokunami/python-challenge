@@ -49,7 +49,7 @@ def computeBudget(fileName):
     fn = fileName[0:fileName.rfind('.')]
     with open('modified_' + fn + '.csv', 'w') as csv_file:
         writer = csv.writer(csv_file, lineterminator='\n')
-        writer.writerow(['Emp ID', 'First Name', 'Last Name', 'DOB', 'SSN', 'State'])     # list（1次元配列）の場合
+        writer.writerow(['Emp ID', 'First Name', 'Last Name', 'DOB', 'SSN', 'State'])
         writer.writerows(modifiedData)
         
 # Get all files in the directory
